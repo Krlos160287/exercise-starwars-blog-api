@@ -55,10 +55,38 @@ def getUsers():
     users = User.getUsers()
     return jsonify(users),200
 
-@app.route('/favorites/<int:user_id>', methods = ['GET'])
+@app.route('/favorite/<int:user_id>', methods = ['GET'])
 def get_favorites_by_id(user_id):
     favorites = Favorite.get_favorites_by_id(user_id)
     return jsonify(favorites), 200
+
+@app.route('/favorites', methods = ['POST'])
+def createFavorite():
+    body = request.get_json()
+    if body is None:
+        return{"error": "The body is empty or null"},400
+    user = User.get_user(body['name'])
+    user_id = user.id
+
+    if "planet_id" in body:
+        Favorite.createFavorite(user_id, None, planet_id)
+        return {"message": "Planet added to Favorites"},200
+    if "people_id" in body:
+        Favorite.createFavorite(user_id, people_id, None)
+        return {"message": "People added to Favorites"},200
+
+@app.route('/favorites/<int:planet_id>', methods = ['DELETE'])
+def deleteFavoritePlanet(planet_id):
+    planet = deleteFavoritePlanet(planet_id)
+    return jsonify(planet),200
+
+@app.route('/favorites/<int:people_id>', methods = ['DELETE'])
+def deleteFavoritePeople(people_id):
+    user = User.get_user(body['name'])
+    user_id = user.id
+    people = deleteFavoritePeople(people_id)
+    return jsonify(people),200
+   
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

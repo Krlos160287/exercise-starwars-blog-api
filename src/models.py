@@ -38,7 +38,7 @@ class Planet(db.Model):
     population = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return "<Planet %r>" % self.nam
+        return "<Planet %r>" % self.name
     
     def serialize(self):
         return{
@@ -98,3 +98,12 @@ class Favorite(db.Model):
         favorites = Favorite.query.filter_by(user_id = user_id)
         favorites = list(map(lambda favorite: favorite.serialize(), favorites))
         return favorites
+    
+    def createFavorite(user_id, people_id, planet_id):
+        favorite = Favorite(user_id = user_id, people_id = people_id, planet_id = planet_id)
+        db.session.add(favorite)
+        db.session.commit()
+
+    def deleteFavoritePlanet(planet_id):
+        planet = Planet.query.delete(planet_id)
+        db.session.commit()
