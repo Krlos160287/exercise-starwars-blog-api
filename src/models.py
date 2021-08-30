@@ -90,8 +90,9 @@ class Favorite(db.Model):
     def serialize(self):
         return{
             "id": self.id,
-            "user_add_favorite": self.user_id,
-            "planet_date": self.planet_id
+            "user_add_favorite": User.serialize(self.user),
+            "planet_data": Planet.serialize(self.planet),
+            "people_data": People.serialize(self.people)
         }
 
     def get_favorites_by_id(user_id):
@@ -104,6 +105,12 @@ class Favorite(db.Model):
         db.session.add(favorite)
         db.session.commit()
 
-    def deleteFavoritePlanet(planet_id):
-        planet = Planet.query.delete(planet_id)
+    def deleteFavoritePeople (favorite_id, people_id):
+        favorite = Favorite.query.get(favorite_id, people_id)
+        db.session.delete(favorite)
+        db.session.commit()
+
+    def deleteFavoritePlanet (favorite_id, planet_id):
+        favorite = Favorite.query.get(favorite_id , planet_id)
+        db.session.delete(favorite)
         db.session.commit()

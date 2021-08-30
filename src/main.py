@@ -75,17 +75,15 @@ def createFavorite():
         Favorite.createFavorite(user_id, people_id, None)
         return {"message": "People added to Favorites"},200
 
-@app.route('/favorites/<int:planet_id>', methods = ['DELETE'])
-def deleteFavoritePlanet(planet_id):
-    planet = deleteFavoritePlanet(planet_id)
-    return jsonify(planet),200
+@app.route('/favorite/<int:planet_id>', methods=['DELETE'])
+def delete_favorite_planet(favorite_id,planet_id):
+    favorite = Favorite.delete_favorite_planet(favorite_id,planet_id)
+    return jsonify(favorites),200
 
-@app.route('/favorites/<int:people_id>', methods = ['DELETE'])
-def deleteFavoritePeople(people_id):
-    user = User.get_user(body['name'])
-    user_id = user.id
-    people = deleteFavoritePeople(people_id)
-    return jsonify(people),200
+@app.route('/favorite/<int:people_id>', methods=['DELETE'])
+def delete_favorite_people(favorite_id,people_id):
+    favorite = Favorite.delete_favorite_people(favorite_id,people_id)
+    return jsonify(favorites),200
    
 
 # this only runs if `$ python src/main.py` is executed
